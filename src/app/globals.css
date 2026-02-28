@@ -1,14 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --bg-page: #f8f9fa;
+  --bg-page: #f0f2f5;
   --bg-card: #ffffff;
-  --bg-header: #ffffff;
-  --border: #e5e7eb;
-  --border-light: #f3f4f6;
-  --text-primary: #111827;
-  --text-secondary: #6b7280;
-  --text-muted: #9ca3af;
+  --bg-header: #0f172a;
+  --border: #e2e8f0;
+  --border-light: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --text-header: #f8fafc;
+
+  /* Bias colors */
+  --bias-far-left: #1e40af;
+  --bias-lean-left: #3b82f6;
+  --bias-center: #64748b;
+  --bias-lean-right: #ea580c;
+  --bias-far-right: #dc2626;
 }
 
 @theme inline {
@@ -20,6 +28,12 @@
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
+  --color-text-header: var(--text-header);
+  --color-bias-far-left: var(--bias-far-left);
+  --color-bias-lean-left: var(--bias-lean-left);
+  --color-bias-center: var(--bias-center);
+  --color-bias-lean-right: var(--bias-lean-right);
+  --color-bias-far-right: var(--bias-far-right);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -27,4 +41,26 @@
 body {
   background: var(--bg-page);
   color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+/* Source pills horizontal scroll */
+.source-scroll {
+  scrollbar-width: none;
+}
+.source-scroll::-webkit-scrollbar {
+  display: none;
 }
