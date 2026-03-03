@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import type { FeedResponse, NewsArticle, TopicCluster as TopicClusterType } from "@/types";
+import type { FeedResponse } from "@/types";
 import TopicCluster from "./TopicCluster";
-import ArticleCard from "./ArticleCard";
 import { SOURCES } from "@/lib/sources";
 
 interface Props {
@@ -82,77 +81,6 @@ function BalanceExplainer() {
   );
 }
 
-// ── Three-column feed (Left | Center | Right) ────────────────────────────────
-function ThreeColumnFeed({
-  allArticles,
-  paidFilter,
-}: {
-  allArticles: NewsArticle[];
-  paidFilter: "all" | "free" | "paid";
-}) {
-  const filtered = useMemo(() => {
-    return allArticles.filter((a) => {
-      if (paidFilter === "free") return !a.source.isPaid;
-      if (paidFilter === "paid") return a.source.isPaid;
-      return true;
-    });
-  }, [allArticles, paidFilter]);
-
-  const left   = filtered.filter((a) => a.source.biasScore < 0);
-  const center = filtered.filter((a) => a.source.biasScore === 0);
-  const right  = filtered.filter((a) => a.source.biasScore > 0);
-
-  const COLS: Array<{ label: string; articles: NewsArticle[]; headerClass: string; dotClass: string }> = [
-    { label: "Left-Leaning",  articles: left,   headerClass: "text-blue-700 border-b-2 border-blue-500",  dotClass: "bg-blue-500" },
-    { label: "Center",        articles: center, headerClass: "text-slate-600 border-b-2 border-slate-400", dotClass: "bg-slate-400" },
-    { label: "Right-Leaning", articles: right,  headerClass: "text-red-700 border-b-2 border-red-500",    dotClass: "bg-red-500" },
-  ];
-
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-      {COLS.map(({ label, articles, headerClass, dotClass }) => (
-        <div key={label} className="flex flex-col gap-3">
-          {/* Column header */}
-          <div className={`pb-2 flex items-center gap-2 ${headerClass}`}>
-            <span className={`w-2.5 h-2.5 rounded-full ${dotClass}`} />
-            <span className="text-sm font-bold">{label}</span>
-            <span className="ml-auto text-xs text-text-muted font-normal">
-              {articles.length} articles
-            </span>
-          </div>
-          {articles.length === 0 ? (
-            <div className="text-center py-8 text-text-muted text-xs">
-              No articles match this filter
-            </div>
-          ) : (
-            articles.slice(0, 20).map((article) => (
-              <ArticleCard key={article.id} article={article} compact />
-            ))
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// ── Featured balanced story ──────────────────────────────────────────────────
-function FeaturedStory({ cluster }: { cluster: TopicClusterType }) {
-  return (
-    <div className="mb-8">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="flex-1 h-px bg-border" />
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
-            Most Balanced Story
-          </span>
-        </div>
-        <div className="flex-1 h-px bg-border" />
-      </div>
-      <TopicCluster cluster={cluster} />
-    </div>
-  );
-}
 
 // ── Main component ───────────────────────────────────────────────────────────
 export default function NewsFeed({ initialData }: Props) {
@@ -173,13 +101,7 @@ export default function NewsFeed({ initialData }: Props) {
     }
   };
 
-  // All articles flat (clusters + unclustered)
-  const allArticles = useMemo(() => {
-    const fromClusters = data.clusters.flatMap((c) => c.articles);
-    return [...fromClusters, ...data.unclustered];
-  }, [data]);
-
-  // Apply paid filter to clusters for the cluster view
+  // Apply paid filter to clusters
   const filteredClusters = useMemo(() => {
     let clusters = data.clusters;
     if (spectrumFilter !== null) {
@@ -205,12 +127,6 @@ export default function NewsFeed({ initialData }: Props) {
     }
     return clusters;
   }, [data.clusters, spectrumFilter, paidFilter]);
-
-  // Best balanced cluster for the featured slot
-  const featuredCluster = useMemo(
-    () => (data.clusters.length > 0 ? data.clusters[0] : null),
-    [data.clusters]
-  );
 
   const isFiltered = spectrumFilter !== null || paidFilter !== "all";
 
@@ -379,33 +295,15 @@ export default function NewsFeed({ initialData }: Props) {
             </button>
           </div>
         ) : (
-          <>
-            {/* Featured balanced cluster — only when no filters active */}
-            {!isFiltered && featuredCluster && (
-              <FeaturedStory cluster={featuredCluster} />
-            )}
-
-            {/* 3-column Left | Center | Right */}
-            <div className="flex items-center gap-3 mb-5">
-              <div className="flex-1 h-px bg-border" />
-              <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest flex-shrink-0">
-                {isFiltered ? "Filtered Stories" : "All Stories by Leaning"}
-              </span>
-              <div className="flex-1 h-px bg-border" />
-            </div>
-
-            {spectrumFilter !== null ? (
-              // Single leaning selected — show flat list
-              <div className="flex flex-col gap-4">
-                {filteredClusters.map((cluster) => (
-                  <TopicCluster key={cluster.id} cluster={cluster} />
-                ))}
-              </div>
-            ) : (
-              // No spectrum filter — show 3-column raw feed
-              <ThreeColumnFeed allArticles={allArticles} paidFilter={paidFilter} />
-            )}
-          </>
+          <div className="flex flex-col gap-5">
+            {filteredClusters.map((cluster, index) => (
+              <TopicCluster
+                key={cluster.id}
+                cluster={cluster}
+                isFeatured={!isFiltered && index === 0}
+              />
+            ))}
+          </div>
         )}
       </main>
 
