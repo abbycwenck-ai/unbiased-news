@@ -6,18 +6,20 @@ export const SOURCES: NewsSource[] = [
   {
     id: "ap",
     name: "AP News",
-    rssUrl: "https://news.google.com/rss/search?q=when:12h+allinurl:apnews.com&ceid=US:en&hl=en-US&gl=US",
+    rssUrl:
+      "https://news.google.com/rss/search?q=when:12h+allinurl:apnews.com&ceid=US:en&hl=en-US&gl=US",
     biasScore: 0,
     biasLabel: "Center",
+    isPaid: false,
   },
   {
     id: "reuters",
     name: "Reuters",
-    // Native RSS deprecated; Google News proxy is reliable
     rssUrl:
       "https://news.google.com/rss/search?q=when:12h+allinurl:reuters.com&ceid=US:en&hl=en-US&gl=US",
     biasScore: 0,
     biasLabel: "Center",
+    isPaid: false,
   },
   {
     id: "bbc",
@@ -25,6 +27,7 @@ export const SOURCES: NewsSource[] = [
     rssUrl: "https://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml",
     biasScore: 0,
     biasLabel: "Center",
+    isPaid: false,
   },
   {
     id: "pbs",
@@ -32,6 +35,7 @@ export const SOURCES: NewsSource[] = [
     rssUrl: "https://www.pbs.org/newshour/feeds/rss/headlines",
     biasScore: 0,
     biasLabel: "Center",
+    isPaid: false,
   },
   {
     id: "thehill",
@@ -39,6 +43,7 @@ export const SOURCES: NewsSource[] = [
     rssUrl: "https://thehill.com/homenews/feed/",
     biasScore: 0,
     biasLabel: "Center",
+    isPaid: false,
   },
   {
     id: "axios",
@@ -46,13 +51,16 @@ export const SOURCES: NewsSource[] = [
     rssUrl: "https://api.axios.com/feed/",
     biasScore: 0,
     biasLabel: "Center",
+    isPaid: false,
   },
   {
     id: "usatoday",
     name: "USA Today",
-    rssUrl: "https://news.google.com/rss/search?q=when:12h+allinurl:usatoday.com&ceid=US:en&hl=en-US&gl=US",
+    rssUrl:
+      "https://news.google.com/rss/search?q=when:12h+allinurl:usatoday.com&ceid=US:en&hl=en-US&gl=US",
     biasScore: 0,
     biasLabel: "Center",
+    isPaid: false,
   },
   {
     id: "npr",
@@ -60,6 +68,7 @@ export const SOURCES: NewsSource[] = [
     rssUrl: "https://feeds.npr.org/1001/rss.xml",
     biasScore: -1,
     biasLabel: "Lean Left",
+    isPaid: false,
   },
   {
     id: "cnn",
@@ -67,13 +76,16 @@ export const SOURCES: NewsSource[] = [
     rssUrl: "http://rss.cnn.com/rss/cnn_topstories.rss",
     biasScore: -1,
     biasLabel: "Lean Left",
+    isPaid: false,
   },
   {
     id: "washpost",
     name: "Washington Post",
-    rssUrl: "https://news.google.com/rss/search?q=when:12h+allinurl:washingtonpost.com&ceid=US:en&hl=en-US&gl=US",
+    rssUrl:
+      "https://news.google.com/rss/search?q=when:12h+allinurl:washingtonpost.com&ceid=US:en&hl=en-US&gl=US",
     biasScore: -1,
     biasLabel: "Lean Left",
+    isPaid: true,
   },
   {
     id: "guardian",
@@ -81,13 +93,16 @@ export const SOURCES: NewsSource[] = [
     rssUrl: "https://www.theguardian.com/us-news/rss",
     biasScore: -1,
     biasLabel: "Lean Left",
+    isPaid: false,
   },
   {
     id: "nbcnews",
     name: "NBC News",
+    // AllSides rates NBC News as Lean Left; corrected from Lean Right
     rssUrl: "https://feeds.nbcnews.com/nbcnews/public/news",
-    biasScore: 1,
-    biasLabel: "Lean Right",
+    biasScore: -1,
+    biasLabel: "Lean Left",
+    isPaid: false,
   },
   {
     id: "wsj",
@@ -95,6 +110,7 @@ export const SOURCES: NewsSource[] = [
     rssUrl: "https://feeds.a.dj.com/rss/RSSWorldNews.xml",
     biasScore: 1,
     biasLabel: "Lean Right",
+    isPaid: true,
   },
   {
     id: "foxnews",
@@ -102,6 +118,7 @@ export const SOURCES: NewsSource[] = [
     rssUrl: "https://moxie.foxnews.com/google-publisher/latest.xml",
     biasScore: 2,
     biasLabel: "Far Right",
+    isPaid: false,
   },
   {
     id: "nypost",
@@ -109,6 +126,7 @@ export const SOURCES: NewsSource[] = [
     rssUrl: "https://nypost.com/feed/",
     biasScore: 2,
     biasLabel: "Far Right",
+    isPaid: false,
   },
 ];
 

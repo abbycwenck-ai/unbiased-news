@@ -12,6 +12,7 @@ export interface NewsSource {
   rssUrl: string;
   biasScore: -2 | -1 | 0 | 1 | 2;
   biasLabel: BiasLabel;
+  isPaid: boolean; // true = paywalled, false = free to read
 }
 
 export interface NewsArticle {
